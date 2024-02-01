@@ -34,7 +34,7 @@ class DatabaseHandler(context: Context) :
         values.put(KEY_NAME, name)
         values.put(KEY_EMAIL, email)
         val success = db.insert(TABLE_NAME, null, values)
-        //db.close()
+        db.close()
         return success
     }
 
