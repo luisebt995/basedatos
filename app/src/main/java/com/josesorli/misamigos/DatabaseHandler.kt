@@ -34,7 +34,31 @@ class DatabaseHandler(context: Context) :
         values.put(KEY_NAME, name)
         values.put(KEY_EMAIL, email)
         val success = db.insert(TABLE_NAME, null, values)
-        db.close()
+        //db.close()
         return success
+    }
+
+    fun getAllContact(): List<Contact>{
+        val contactList = mutableListOf<Contact>()
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $TABLE_NAME"
+        val cursor = db.rawQuery(query,null)
+        cursor.use {
+            //Check if there is a first row in the table
+            if(it.moveToFirst()){
+                //First to last row iteration
+                do {
+                    //Get values from row
+                    val id = it.getInt(it.getColumnIndex(KEY_ID))
+                    val name = it.getString(it.getColumnIndex(KEY_NAME))
+                    val email = it.getString(it.getColumnIndex(KEY_EMAIL))
+
+                    //Add new element in List
+                    contactList.add(Contact(id, name, email))
+                }while(it.moveToNext())
+            }
+        }
+        db.close()
+        return contactList
     }
 }

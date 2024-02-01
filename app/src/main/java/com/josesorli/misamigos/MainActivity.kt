@@ -1,8 +1,10 @@
 package com.josesorli.misamigos
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -11,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nameEditText: EditText
     private lateinit var emailEditText: EditText
     private lateinit var saveButton: Button
+    private lateinit var resultButton: Button
+    private lateinit var resultText: TextView
 
     private lateinit var db: DatabaseHandler
 
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         nameEditText = findViewById(R.id.nameEditText)
         emailEditText = findViewById(R.id.emailEditText)
         saveButton = findViewById(R.id.saveButton)
+        resultButton = findViewById(R.id.btnRevision)
+        resultText = findViewById(R.id.textViewResultados)
 
         db = DatabaseHandler(this)
 
@@ -42,6 +48,20 @@ class MainActivity : AppCompatActivity() {
             } else {
                 // Los campos están vacíos, muestra un mensaje de error o realiza alguna otra acción aquí
                 Toast.makeText(applicationContext, "Te falta algún campo por rellenar", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        resultButton.setOnClickListener {
+            val contactList = db.getAllContact()
+            resultText.text = ""
+
+            //Quickest way to show it, but print is a mess
+            //resultText.text = contactList.joinToString()
+
+            //Iteration for showing register in TextView
+            for(contact in contactList){
+                resultText.text = "${resultText.text} ID: ${contact.id} Name: ${contact.name} Email: ${contact.email} \n"
+                //Log.d("Contacto", "ID: ${contact.id} Name: ${contact.name} Email: ${contact.email}")
             }
         }
     }
