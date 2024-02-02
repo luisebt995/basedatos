@@ -37,14 +37,16 @@ class MainActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             val name = nameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
+            val province = provinceEditText.text.toString().trim()
 
-            if (name.isNotEmpty() && email.isNotEmpty()) {
-                val id = db.addContact(name, email)
+            if (name.isNotEmpty() && email.isNotEmpty() && province.isNotEmpty()) {
+                val id = db.addContact(name, email, province)
                 if (id != -1L) {
                     // Éxito al guardar en la base de datos
                     // Puedes mostrar un mensaje de éxito o realizar alguna otra acción aquí
                     nameEditText.text.clear()
                     emailEditText.text.clear()
+                    provinceEditText.text.clear()
                 } else {
                     // Ocurrió un error al guardar en la base de datos
                     // Puedes mostrar un mensaje de error o realizar alguna otra acción aquí
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
             //Iteration for showing register in TextView
             for(contact in contactList){
-                resultText.text = "${resultText.text} ID: ${contact.id} Name: ${contact.name} Email: ${contact.email} \n"
+                resultText.text = "${resultText.text} ID: ${contact.id} Name: ${contact.name} Email: ${contact.email} Provincia: ${contact.province} \n"
                 //Log.d("Contacto", "ID: ${contact.id} Name: ${contact.name} Email: ${contact.email}")
             }
         }

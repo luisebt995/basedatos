@@ -9,16 +9,17 @@ class DatabaseHandler(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "MyDatabase"
         private const val TABLE_NAME = "Contacts"
         private const val KEY_ID = "id"
         private const val KEY_NAME = "name"
         private const val KEY_EMAIL = "email"
+        private const val KEY_PROVINCE = "province"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTable = ("CREATE TABLE $TABLE_NAME($KEY_ID INTEGER PRIMARY KEY,$KEY_NAME TEXT,$KEY_EMAIL TEXT)")
+        val createTable = ("CREATE TABLE $TABLE_NAME($KEY_ID INTEGER PRIMARY KEY,$KEY_NAME TEXT,$KEY_EMAIL TEXT, $KEY_PROVINCE TEXT)")
         db?.execSQL(createTable)
     }
 
@@ -27,12 +28,13 @@ class DatabaseHandler(context: Context) :
         onCreate(db)
     }
 
-    fun addContact(name: String, email: String): Long {
+    fun addContact(name: String, email: String, province:String): Long {
         val db = this.writableDatabase
         //Las siguientes lineas crean una lista Key,Valor con name, email
         val values = ContentValues()
         values.put(KEY_NAME, name)
         values.put(KEY_EMAIL, email)
+        values.put(KEY_PROVINCE, province)
         val success = db.insert(TABLE_NAME, null, values)
         db.close()
         return success
@@ -52,9 +54,10 @@ class DatabaseHandler(context: Context) :
                     val id = it.getInt(it.getColumnIndex(KEY_ID))
                     val name = it.getString(it.getColumnIndex(KEY_NAME))
                     val email = it.getString(it.getColumnIndex(KEY_EMAIL))
+                    val province = it.getString(it.getColumnIndex(KEY_PROVINCE))
 
                     //Add new element in List
-                    contactList.add(Contact(id, name, email))
+                    contactList.add(Contact(id, name, email, province))
                 }while(it.moveToNext())
             }
         }
