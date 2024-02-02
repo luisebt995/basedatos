@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var nameEditText: EditText
     private lateinit var emailEditText: EditText
+    private lateinit var provinceEditText: EditText
     private lateinit var saveButton: Button
     private lateinit var resultButton: Button
     private lateinit var resultText: TextView
@@ -25,11 +26,12 @@ class MainActivity : AppCompatActivity() {
 
         nameEditText = findViewById(R.id.nameEditText)
         emailEditText = findViewById(R.id.emailEditText)
+        provinceEditText = findViewById(R.id.provinceEditText)
         saveButton = findViewById(R.id.saveButton)
         resultButton = findViewById(R.id.btnRevision)
         resultText = findViewById(R.id.textViewResultados)
-        resultText.movementMethod = ScrollingMovementMethod.getInstance()
 
+        resultText.movementMethod = ScrollingMovementMethod.getInstance()
         db = DatabaseHandler(this)
 
         saveButton.setOnClickListener {

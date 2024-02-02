@@ -28,6 +28,14 @@
             android:hint="Email: "
             android:inputType="text" />
 
+        <EditText
+            android:id="@+id/provinceEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Provincia: "
+            android:inputType="text" />
+
         <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
