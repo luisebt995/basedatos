@@ -1,6 +1,7 @@
 package com.josesorli.misamigos
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.saveButton)
         resultButton = findViewById(R.id.btnRevision)
         resultText = findViewById(R.id.textViewResultados)
+        resultText.movementMethod = ScrollingMovementMethod.getInstance()
 
         db = DatabaseHandler(this)
 
