@@ -47,6 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Revision" />
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Busqueda" />
 
         <TextView
             android:id="@+id/textViewResultados"

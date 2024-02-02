@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var provinceEditText: EditText
     private lateinit var saveButton: Button
     private lateinit var resultButton: Button
+    private lateinit var searchButton: Button
     private lateinit var resultText: TextView
 
     private lateinit var db: DatabaseHandler
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         provinceEditText = findViewById(R.id.provinceEditText)
         saveButton = findViewById(R.id.saveButton)
         resultButton = findViewById(R.id.btnRevision)
+        searchButton = findViewById(R.id.btnSearch)
         resultText = findViewById(R.id.textViewResultados)
 
         resultText.movementMethod = ScrollingMovementMethod.getInstance()
@@ -69,6 +71,19 @@ class MainActivity : AppCompatActivity() {
                 resultText.text = "${resultText.text} ID: ${contact.id} Name: ${contact.name} Email: ${contact.email} Provincia: ${contact.province} \n"
                 //Log.d("Contacto", "ID: ${contact.id} Name: ${contact.name} Email: ${contact.email}")
             }
+        }
+
+        searchButton.setOnClickListener {
+            val provincia = provinceEditText.text.toString().trim()
+            if (provincia.isNotEmpty()) {
+                resultText.text = ""
+                val contactList = db.getProvinceContact(provincia)
+                for(contact in contactList){
+                    resultText.text = "${resultText.text} ID: ${contact.id} Name: ${contact.name} Email: ${contact.email} Provincia: ${contact.province} \n"
+                    //Log.d("Contacto", "ID: ${contact.id} Name: ${contact.name} Email: ${contact.email}")
+                }
+            }
+            else Toast.makeText(applicationContext, "Especifique una provincia", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -64,4 +64,29 @@ class DatabaseHandler(context: Context) :
         db.close()
         return contactList
     }
+
+    fun getProvinceContact(provincia: String): List<Contact>{
+        val contactList = mutableListOf<Contact>()
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $TABLE_NAME WHERE province = '$provincia'"
+        val cursor = db.rawQuery(query,null)
+        cursor.use {
+            //Check if there is a first row in the table
+            if(it.moveToFirst()){
+                //First to last row iteration
+                do {
+                    //Get values from row
+                    val id = it.getInt(it.getColumnIndex(KEY_ID))
+                    val name = it.getString(it.getColumnIndex(KEY_NAME))
+                    val email = it.getString(it.getColumnIndex(KEY_EMAIL))
+                    val province = it.getString(it.getColumnIndex(KEY_PROVINCE))
+
+                    //Add new element in List
+                    contactList.add(Contact(id, name, email, province))
+                }while(it.moveToNext())
+            }
+        }
+        db.close()
+        return contactList
+    }
 }
