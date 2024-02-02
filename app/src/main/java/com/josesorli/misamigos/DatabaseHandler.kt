@@ -89,4 +89,23 @@ class DatabaseHandler(context: Context) :
         db.close()
         return contactList
     }
+
+    fun getDistinctProvinces():List<String>{
+        val provincesArray = mutableListOf<String>()
+        val db = this.readableDatabase
+        val query = "SELECT DISTINCT $KEY_PROVINCE FROM $TABLE_NAME"
+        val cursor = db.rawQuery(query,null)
+        cursor.use {
+            //Check if there is a first row in the table
+            if(it.moveToFirst()){
+                //First to last row iteration
+                do {
+                    //Get values from row
+                    provincesArray.add(it.getString(it.getColumnIndex(KEY_PROVINCE)))
+                }while(it.moveToNext())
+            }
+        }
+        db.close()
+        return provincesArray
+    }
 }

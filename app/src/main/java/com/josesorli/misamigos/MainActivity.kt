@@ -39,17 +39,20 @@ class MainActivity : AppCompatActivity() {
         spnProvinces = findViewById(R.id.spnProvinces)
         resultText = findViewById(R.id.textViewResultados)
 
-        //The ArrayAdapter will be responsible for rendering every item in the languages string array to the screen when the Kotlin dropdown menu is accessed
-        val adapter = ArrayAdapter.createFromResource(this, R.array.provinces, android.R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        //The adapter that we declared above is useless unless it is attached to our dropdown menu
-        spnProvinces.adapter = adapter
+
 
         //Set up a scroll view
         resultText.movementMethod = ScrollingMovementMethod.getInstance()
 
         //Initialize handler
         db = DatabaseHandler(this)
+
+        //The ArrayAdapter will be responsible for rendering every item in the languages string array to the screen when the Kotlin dropdown menu is accessed
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, db.getDistinctProvinces())
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        //The adapter that we declared above is useless unless it is attached to our dropdown menu
+        spnProvinces.adapter = adapter
 
         saveButton.setOnClickListener {
             val name = nameEditText.text.toString().trim()
@@ -64,6 +67,11 @@ class MainActivity : AppCompatActivity() {
                     nameEditText.text.clear()
                     emailEditText.text.clear()
                     provinceEditText.text.clear()
+
+                    val adapterRefresh = ArrayAdapter(this, android.R.layout.simple_spinner_item, db.getDistinctProvinces())
+                    adapterRefresh.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnProvinces.adapter = adapterRefresh
+
                 } else {
                     // Ocurrió un error al guardar en la base de datos
                     // Puedes mostrar un mensaje de error o realizar alguna otra acción aquí
