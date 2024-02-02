@@ -53,6 +53,12 @@
             android:layout_height="wrap_content"
             android:text="Busqueda" />
 
+        <Spinner
+            android:id="@+id/spnProvinces"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+
         <TextView
             android:id="@+id/textViewResultados"
             android:layout_width="match_parent"

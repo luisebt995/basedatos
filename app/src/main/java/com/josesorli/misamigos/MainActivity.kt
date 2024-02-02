@@ -3,8 +3,12 @@ package com.josesorli.misamigos
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var resultButton: Button
     private lateinit var searchButton: Button
+    private lateinit var spnProvinces: Spinner
     private lateinit var resultText: TextView
 
     private lateinit var db: DatabaseHandler
@@ -31,9 +36,19 @@ class MainActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.saveButton)
         resultButton = findViewById(R.id.btnRevision)
         searchButton = findViewById(R.id.btnSearch)
+        spnProvinces = findViewById(R.id.spnProvinces)
         resultText = findViewById(R.id.textViewResultados)
 
+        //The ArrayAdapter will be responsible for rendering every item in the languages string array to the screen when the Kotlin dropdown menu is accessed
+        val adapter = ArrayAdapter.createFromResource(this, R.array.provinces, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        //The adapter that we declared above is useless unless it is attached to our dropdown menu
+        spnProvinces.adapter = adapter
+
+        //Set up a scroll view
         resultText.movementMethod = ScrollingMovementMethod.getInstance()
+
+        //Initialize handler
         db = DatabaseHandler(this)
 
         saveButton.setOnClickListener {
@@ -84,6 +99,31 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             else Toast.makeText(applicationContext, "Especifique una provincia", Toast.LENGTH_SHORT).show()
+        }
+
+        spnProvinces.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                // Handle the selected item here
+                val selectedItem = parentView.getItemAtPosition(position).toString()
+                // Do something with the selected item
+                if(selectedItem != ""){
+                    resultText.text = ""
+                    val contactList = db.getProvinceContact(selectedItem)
+                    for(contact in contactList){
+                        resultText.text = "${resultText.text} ID: ${contact.id} Name: ${contact.name} Email: ${contact.email} Provincia: ${contact.province} \n"
+                        //Log.d("Contacto", "ID: ${contact.id} Name: ${contact.name} Email: ${contact.email}")
+                    }
+                }else resultText.text = ""
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // Do nothing here
+            }
         }
     }
 }

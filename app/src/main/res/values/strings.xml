@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">misAmigos</string>
+    <string-array name="provinces">
+        <item></item>
+        <item>Valencia</item>
+        <item>Alicante</item>
+        <item>Castellon</item>
+    </string-array>
 </resources>
